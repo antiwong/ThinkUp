@@ -747,6 +747,7 @@ class TestOfInstanceMySQLDAO extends ThinkUpUnitTestCase {
         $this->assertEqual($instance->network_username, "johndoe2" );
     }
 
+
     public function testGetActiveInstancesStalestFirstForOwnerByNetworkNoAuthError() {
         $this->builders[] = FixtureBuilder::build('instances', array('network_user_id'=>17, 'network_username'=>'yaya',
         'network'=>'twitter', 'network_viewer_id'=>17, 'crawler_last_run'=>'2010-01-21 12:00:00', 'is_active'=>1,
@@ -779,4 +780,24 @@ class TestOfInstanceMySQLDAO extends ThinkUpUnitTestCase {
         $this->assertEqual($result[1]->id, 6);
         $this->assertEqual($result[1]->network_username, "yaya");
     }
+
+    public function testCheckIfOldPostsHaveBeenArchived() {
+        $this->DAO = new InstanceMySQLDAO();
+        $builders[] = FixtureBuilder::build('instances', array('network_user_id'=>18,
+        'network_username'=>'johndoe', 'network'=>'foursquare', 'network_viewer_id'=>16,
+        'crawler_last_run'=>'2010-01-01 12:00:01', 'is_active'=>1, 'is_post_archive_loaded'=>1));
+        $query = $this->DAO->checkIfOldPostsHaveBeenArchived('johndoe', 'foursquare');
+        $this->assertTrue($query);
+    }
+
+    public function testUpdatePostArchivedLoaded() {
+        $this->DAO = new InstanceMySQLDAO();
+        $builders[] = FixtureBuilder::build('instances', array('network_user_id'=>19,
+        'network_username'=>'tyler', 'network'=>'foursquare', 'network_viewer_id'=>17,
+        'crawler_last_run'=>'2010-01-01 12:00:01', 'is_active'=>1, 'is_post_archive_loaded'=>0));
+        $this->DAO->updatePostArchivedLoaded('tyler', 'foursquare', 1);
+        $query = $this->DAO->checkIfOldPostsHaveBeenArchived('tyler', 'foursquare');
+        $this->assertTrue($query);
+    }
 }
+

@@ -37,11 +37,11 @@ class TestOfDashboardController extends ThinkUpUnitTestCase {
 
     public function setUp(){
         parent::setUp();
-        $webapp_plugin_registrar = PluginRegistrarWebapp::getInstance();
-        $webapp_plugin_registrar->registerPlugin('twitter', 'TwitterPlugin');
-        $webapp_plugin_registrar->registerPlugin('facebook', 'FacebookPlugin');
-        $webapp_plugin_registrar->registerPlugin('google+', 'GooglePlusPlugin');
-        $webapp_plugin_registrar->registerPlugin('foursquare', 'FoursquarePlugin');
+        $webapp = Webapp::getInstance();
+        $webapp->registerPlugin('twitter', 'TwitterPlugin');
+        $webapp->registerPlugin('facebook', 'FacebookPlugin');
+        $webapp->registerPlugin('google+', 'GooglePlusPlugin');
+        $webapp->registerPlugin('foursquare', 'FoursquarePlugin');
     }
 
     public function testConstructor() {
@@ -243,8 +243,8 @@ class TestOfDashboardController extends ThinkUpUnitTestCase {
         $config = Config::getInstance();
         $this->assertPattern('/Export/', $results);
     }
-
-    public function testLoggedInPostsFoursquare() {
+    
+    public function testLoggedInPostsFoursquare() {      
         $builders = $this->buildData();
         $this->simulateLogin('me@example.com');
         //required params
@@ -253,7 +253,7 @@ class TestOfDashboardController extends ThinkUpUnitTestCase {
         $_GET['v'] = 'posts';
         $controller = new DashboardController(true);
         $results = $controller->go();
-
+    
         $config = Config::getInstance();
         $this->assertPattern('/kim@kim.com on Foursquare/', $results);
     }
@@ -371,15 +371,15 @@ class TestOfDashboardController extends ThinkUpUnitTestCase {
         //Add instance_owner
         $instance_owner_builder_1 = FixtureBuilder::build('owner_instances', array('owner_id'=>1, 'instance_id'=>1));
         $instance_owner_builder_2 = FixtureBuilder::build('owner_instances', array('owner_id'=>1, 'instance_id'=>2));
-        /*
-         $instance_owner_builder_3 = FixtureBuilder::build('owner_instances', array('owner_id'=>1, 'instance_id'=>3,
-         'auth_error'=>'Error validating access token: Session has expired at unix time SOME_TIME. The current unix '.
-         'time is SOME_TIME.'));
-         */
+<<<<<<< HEAD
         $instance_owner_builder_3 = FixtureBuilder::build('owner_instances', array('owner_id'=>1, 'instance_id'=>3,
         'auth_error'=>'Error validating access token: Session has expired at unix time SOME_TIME. The current unix '.
         'time is SOME_TIME.'));
+=======
+        $instance_owner_builder_3 = FixtureBuilder::build('owner_instances', array('owner_id'=>1, 'instance_id'=>3));
         $instance_owner_builder_4 = FixtureBuilder::build('owner_instances', array('owner_id'=>1, 'instance_id'=>4));
+>>>>>>> 718-Foursquare-Plugin.
+
         //Insert test data into test table
         $user_builders = array();
 
@@ -394,7 +394,7 @@ class TestOfDashboardController extends ThinkUpUnitTestCase {
 
         $user_builders[] = FixtureBuilder::build('users', array('user_id'=>'16', 'user_name'=>"Kim",
         'last_updated'=>'-5d', 'network'=>'google+'));
-
+        
         $user_builders[] = FixtureBuilder::build('users', array('user_id'=>'17', 'user_name'=>"kim@kim.com",
         'last_updated'=>'-5d', 'network'=>'foursquare'));
 
@@ -407,9 +407,9 @@ class TestOfDashboardController extends ThinkUpUnitTestCase {
 
         $instance_builder_2 = FixtureBuilder::build('instances', array('id'=>2, 'network_user_id'=>'16',
         'network_username'=>"Kim", 'is_public'=>0, 'crawler_last_run'=>'-1d', 'network'=>'google+'));
-
+        
         $instance_builder_4 = FixtureBuilder::build('instances', array('id'=>4, 'network_user_id'=>'17',
-        'network_username'=>"kim@kim.com", 'is_public'=>1, 'crawler_last_run'=>'-1d',
+        'network_username'=>"kim@kim.com", 'is_public'=>1, 'crawler_last_run'=>'-1d', 
         'network'=>'foursquare'));
 
         $post_builders = array();
@@ -449,7 +449,7 @@ class TestOfDashboardController extends ThinkUpUnitTestCase {
         }
 
         return array($owner_builder, $instance_owner_builder_1, $instance_owner_builder_2, $instance_owner_builder_3,
-        $instance_owner_builder_4, $user_builders, $instance_builder_1, $instance_builder_2, $instance_builder_3,
+        $instance_owner_builder_4, $user_builders, $instance_builder_1, $instance_builder_2, $instance_builder_3, 
         $instance_builder_4, $post_builders);
     }
 }
