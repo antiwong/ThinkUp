@@ -73,7 +73,7 @@
                         <div class="clearfix article"> 
                         <div class="individual-tweet post clearfix">
                         <div class="grid_5 alpha">
-                        <a href="http://maps.google.co.uk/maps?q={$current->geo}"><img src="{$current->place_obj->map_image}"></a>
+                        <a href="http://maps.google.com/maps?q={$current->geo}"><img src="{$current->place_obj->map_image}"></a>
                         </div>    
                         <div class="grid_6"> 
                         <img src="{$current->place_obj->icon}"> {$current->place} <br> {$current->location} <br>

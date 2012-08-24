@@ -210,7 +210,7 @@ class TestOfFoursquareCrawler extends ThinkUpUnitTestCase {
         $this->assertEqual($post->location, 'Bedworth, CV12 0AS');
         // Check the place ID was set
         $this->assertEqual($post->place_id, '4e22eac31838712abe8186e3');
-        // Check the geo co ordinates were set
+        // Check the geo coordinates were set
         $this->assertEqual($post->geo, '52.477241961421,-1.4845029364055');
 
         // Now check the details about the place were stored in the places table

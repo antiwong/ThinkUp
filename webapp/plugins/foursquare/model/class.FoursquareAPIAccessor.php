@@ -55,7 +55,7 @@ class FoursquareAPIAccessor{
         // Foursquare requires us to add the date at the end of the request so get a date array
         $date = getdate();
 
-        // Add the year month and day at the end of the URL 
+        // Add the year month and day at the end of the URL
         $url = $url."&v=".$date['year'].$date['mon'].$date['mday'];
 
         // Get any results returned from this request

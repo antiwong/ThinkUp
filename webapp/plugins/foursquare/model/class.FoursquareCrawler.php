@@ -21,7 +21,7 @@
  *
  * Foursquare Crawler
  *
- * Retrives data from foursquare
+ * Retrives data from Foursquare
  *
  * Copyright (c) 2012 Aaron Kalair
  *
@@ -208,7 +208,7 @@ class FoursquareCrawler {
     public function fetchInstanceUserCheckins(){
         $instance_dao = DAOFactory::getDAO('InstanceDAO');
         $archived = $instance_dao->checkIfOldPostsHaveBeenArchived($this->instance->network_username, 'foursquare');
-       
+
         // Check if its the first time this user has ran the foursquare crawler
         if($archived == 0) {
             // If it is go back in time and fetch all the checkins
@@ -219,40 +219,40 @@ class FoursquareCrawler {
             self::parseResults($checkins);
         }
     }
-    
+
     /**
      * Get and store every checkin the user has ever made
      */
     public function getAllCheckins() {
         $instance_dao = DAOFactory::getDAO('InstanceDAO');
-        
+
         // Ask foursquare for all checkins since time 0
         $fields = array(
             'afterTimestamp'=>0
         );
-        
+
         $checkins = $this->api_accessor->apiRequest('users/self/checkins', $this->access_token, $fields);
         $offset = 0;
-        
+
         // while we have results (ID for the first checkin will always be set if we have checkins)
         while(isset($checkins->response->checkins->items[0]->id)) {
             // parse this page of results
             self::parseResults($checkins);
-            
+
             // request the next page of results (we get 250 per page from foursquare)
             $offset = $offset + 250;
             $fields = array(
                 'afterTimestamp'=>0,
                 'offset'=> $offset
             );
-            
-            $checkins = $this->api_accessor->apiRequest('users/self/checkins', $this->access_token, $fields);            
+
+            $checkins = $this->api_accessor->apiRequest('users/self/checkins', $this->access_token, $fields);
         }
-        
+
         // Set the old posts loaded bit
         $instance_dao->updatePostArchivedLoaded($this->instance->network_username, "foursquare", "1");
-    } 
-    
+    }
+
     /**
      *  Parse the JSON returned from foursquare and store them in the database
      *  @param JSON $checkins
@@ -262,12 +262,12 @@ class FoursquareCrawler {
         $post_dao = DAOFactory::getDAO('PostDAO');
         $place_dao = DAOFactory::getDAO('PlaceDAO');
         $link_dao = DAOFactory::getDAO('LinkDAO');
-        
+
         // Check we actually got a set of checkins
         if (isset($checkins->response->checkins->items) && sizeof($checkins->response->checkins->items) > 0) {
             // Make a query out to the API for this users details, like name etc.
             $user =  $this->api_accessor->apiRequest('users/self', $this->access_token);
-        
+
             // For each checkin store it in the database
             foreach ($checkins->response->checkins->items as $item) {
                 // The post ID, is the checkin ID foursquare provides
@@ -308,10 +308,10 @@ class FoursquareCrawler {
                 $post['favlike_count_cache'] = '';
                 $post['retweet_count_cache'] = '';
                 $post['author_follower_count'] = '';
-        
+
                 // Store the checkin details in the database
                 $done = $post_dao->addPost($post);
-        
+
                 // Check if any photos are attached to this checkin
                 if ($item->photos->count > 0 && $done != null) {
                     foreach($item->photos->items as $photo) {
@@ -331,12 +331,12 @@ class FoursquareCrawler {
                         $photo_store = null;
                     }
                 }
-        
+
                 // If there are any comments on this checkin capture them
                 if ($item->comments->count > 0) {
                     // Make a query out for the comments
                     $comments = $this->api_accessor->apiRequest('checkins/'.$item->id, $this->access_token);
-        
+
                     foreach ($comments->response->checkin->comments->items as $comment) {
                         // The post ID, is the comment ID foursquare provides
                         $comment_store['post_id'] = $comment->id;
@@ -378,20 +378,20 @@ class FoursquareCrawler {
                         $comment_store['favlike_count_cache'] = '';
                         $comment_store['retweet_count_cache'] = '';
                         $comment_store['author_follower_count'] = '';
-        
+
                         self::fetchUser($comment_store['author_user_id'], 'comment' );
                         // Now store the comment in the database
                         $post_dao->addPost($comment_store);
-        
+
                         $comment = null;
                     }
                 }
-        
+
                 // Store the details about this place in the place table if it doesn't already exist
-        
+
                 // See if this place is already in the database
                 $place_test = $place_dao->getPlaceByID($item->venue->id);
-        
+
                 // If it isn't already in the database
                 if ($place_test == null) {
                     // Insert it
@@ -410,8 +410,8 @@ class FoursquareCrawler {
                 $places = null;
             }
         } else {
-              $this->logger->logInfo("No checkins found ". Utils::varDumpToString($checkins) );
-          }        
+            $this->logger->logInfo("No checkins found ". Utils::varDumpToString($checkins) );
+        }
     }
 
     /**

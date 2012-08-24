@@ -2,10 +2,10 @@
     
 <div class="append_20 alert helpful">
     {insert name="help_link" id='foursquare'}
-    <h2>foursquare Plugin</h2>
+    <h2>Foursquare Plugin</h2>
     
     <div class="">
-    <p>The foursquare plugin captures your foursquare checkins, photos, and comments.</p>
+    <p>The Foursquare plugin captures your Foursquare checkins, photos, and comments.</p>
     
     </div>
     
@@ -18,7 +18,7 @@
 {if $oauth_link}
 <br>
 {include file="_usermessage.tpl" field='authorization'}
-<a href="{$oauth_link}" class="linkbutton emphasized">Add a foursquare User</a>
+<a href="{$oauth_link}" class="linkbutton emphasized">Add a Foursquare User</a>
 <div style="clear:all">&nbsp;<br><br><br></div>
 {/if}
 
@@ -41,7 +41,7 @@
         <div class="grid_8 right">
             <span id="delete{$i->id}"><form method="post" action="{$site_root_path}account/?p=foursquare"><input type="hidden" name="instance_id" value="{$i->id}">
             {insert name="csrf_token"}<!-- delete account csrf token -->
-            <input onClick="return confirm('Do you really want to delete this foursquare account from ThinkUp?');"  type="submit" name="action" class="linkbutton" value="delete" /></form></span>
+            <input onClick="return confirm('Do you really want to delete this Foursquare account from ThinkUp?');"  type="submit" name="action" class="linkbutton" value="delete" /></form></span>
         </div>
     </div>
     {/foreach}
@@ -56,9 +56,9 @@
 {if $user_is_admin}
 {include file="_plugin.showhider.tpl"}
 {include file="_usermessage.tpl" field="setup"}
-<p style="padding:5px">To set up the foursquare plugin:</p>
+<p style="padding:5px">To set up the Foursquare plugin:</p>
 <ol style="margin-left:40px">
-<li><a href="https://foursquare.com/oauth/register" target="_blank"">Register a new consumer at the foursquare web site</a>.</li>
+<li><a href="https://foursquare.com/oauth/register" target="_blank"">Register a new consumer at the Foursquare web site</a>.</li>
 <li> Set the Application Name to <code>ThinkUp</code>.</li>
 <li> Set the Application URL to:<br />
 <small>

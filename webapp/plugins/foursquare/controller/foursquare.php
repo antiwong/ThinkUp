@@ -1,8 +1,8 @@
 <?php
 /*
- Plugin Name: foursquare
+ Plugin Name: Foursquare
  Plugin URI: http://github.com/ginatrapani/thinkup/tree/master/webapp/plugins/foursquare/
- Description: Capture and display foursquare checkins.
+ Description: Capture and display Foursquare checkins.
  Class: FoursquarePlugin
  Icon: assets/img/foursquare_icon.png
  Version: 1
@@ -28,8 +28,8 @@
  * <http://www.gnu.org/licenses/>.
  *
  *
- * foursquare
- * registers the plugin and crawler
+ * Foursquare
+ * Registers the plugin and crawler.
  *
  * Copyright (c) 2012 Aaron Kaliar
  *
